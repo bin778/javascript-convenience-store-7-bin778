@@ -10,8 +10,10 @@ class StoreController {
 
   async visitStore() {
     const products = this.#productsList.getProductsList('public/products.md');
+    // [ ] 행사 목록도 파일을 받아서 불러올 것
 
     StoreOutput.readStoreInfoMessage();
+    StoreOutput.readProductsList(products);
   }
 }
 
