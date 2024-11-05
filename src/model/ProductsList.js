@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { PRODUCTS } from '../constant/Data.js';
 
 class ProductsList {
   #productsList;
@@ -24,16 +25,16 @@ class ProductsList {
   }
 
   parseProducts(splitedProducts) {
-    const header = splitedProducts.slice(0, 4);
-    const item = splitedProducts.slice(4);
+    const header = splitedProducts.slice(0, PRODUCTS.productsInfo);
+    const item = splitedProducts.slice(PRODUCTS.productsInfo);
     item.forEach((_, index) => {
       this.matchItemToIndex(header, item, index);
     });
   }
 
   matchItemToIndex(header, item, index) {
-    if (index % 4 === 0) {
-      let [name, price, quantity, promotion] = item.slice(index, index + 4);
+    if (index % PRODUCTS.productsInfo === 0) {
+      let [name, price, quantity, promotion] = item.slice(index, index + PRODUCTS.productsInfo);
       this.createObject(this.#productsList, name);
       promotion = this.isNullPromotion(promotion);
       this.pushObject(this.#productsList, header, name, price, quantity, promotion);
