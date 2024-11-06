@@ -2,6 +2,7 @@ import StoreOutput from '../view/StoreOutput.js';
 import StoreInput from '../view/StoreInput.js';
 import ProductsList from '../model/ProductsList.js';
 import PromotionsList from '../model/PromotionsList.js';
+import HandlerInput from '../view/HandlerInput.js';
 
 class StoreController {
   #productsList;
@@ -18,7 +19,21 @@ class StoreController {
 
     StoreOutput.readStoreInfoMessage();
     StoreOutput.readProductsList(products);
-    const productQuantity = await StoreInput.readProductQuantity();
+    const quantity = await this.#inputQuantity();
+    console.log(quantity);
+  }
+
+  async #inputQuantity() {
+    while (true) {
+      try {
+        const quantityInput = await StoreInput.readQuantity();
+        const quantityArr = quantityInput.split(',');
+        HandlerInput.handleQuantityInput(quantityArr);
+        return quantityArr;
+      } catch (error) {
+        StoreOutput.printErrorMessage(error);
+      }
+    }
   }
 }
 
