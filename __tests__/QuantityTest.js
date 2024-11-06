@@ -1,4 +1,4 @@
-import ValidateQuantity from '../src/validation/ValidateQuantity.js';
+import ValidatePurchaseProducts from '../src/validation/ValidatePurchaseProducts.js';
 import { ERROR_MESSAGE } from '../src/constant/Error.js';
 
 describe('구매할 상품과 수량을 입력받는 테스트', () => {
@@ -10,7 +10,7 @@ describe('구매할 상품과 수량을 입력받는 테스트', () => {
     [['[콜라+8]']],
   ])('입력 형식이 맞지 않는 경우', (input) => {
     expect(() => {
-      ValidateQuantity.validateInputFormat(input);
-    }).toThrow(ERROR_MESSAGE.QUANTITY.inputFormat);
+      ValidatePurchaseProducts.validateInputFormat(input);
+    }).toThrow(ERROR_MESSAGE.PURCHASE.inputFormat);
   });
 });
