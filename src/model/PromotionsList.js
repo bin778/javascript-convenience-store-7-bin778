@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { PROMOTIONS } from '../constant/Data.js';
 
+// [ ] ProductsList() 와의 반복 리팩토링
 class PromotionsList {
   #promotionsList;
 

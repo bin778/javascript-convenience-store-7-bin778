@@ -1,4 +1,5 @@
 import StoreOutput from '../view/StoreOutput.js';
+import StoreInput from '../view/StoreInput.js';
 import ProductsList from '../model/ProductsList.js';
 import PromotionsList from '../model/PromotionsList.js';
 
@@ -17,6 +18,7 @@ class StoreController {
 
     StoreOutput.readStoreInfoMessage();
     StoreOutput.readProductsList(products);
+    const productQuantity = await StoreInput.readProductQuantity();
   }
 }
 
