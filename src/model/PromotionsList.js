@@ -13,7 +13,8 @@ class PromotionsList {
     const fsPromotions = this.readFilePromotions(path);
     const splitedPromotions = this.splitPromotions(fsPromotions);
     this.parsePromotions(splitedPromotions);
-    return this.#promotionsList;
+    const promotionsList = this.#promotionsList;
+    return promotionsList;
   }
 
   readFilePromotions(path) {

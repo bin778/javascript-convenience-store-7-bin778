@@ -1,10 +1,10 @@
 import { ERROR_MESSAGE } from '../constant/Error.js';
+import { REGEX } from '../constant/Regex.js';
 
 class ValidatePurchaseProducts {
   static validateInputFormat(purchaseProducts) {
-    const format_regex = /^\[[^\[\]-]+-\d+\]$/;
     purchaseProducts.forEach((item) => {
-      if (!format_regex.test(item)) throw new Error(ERROR_MESSAGE.PURCHASE.inputFormat);
+      if (!REGEX.formatRegex.test(item)) throw new Error(ERROR_MESSAGE.PURCHASE.inputFormat);
     });
   }
 }

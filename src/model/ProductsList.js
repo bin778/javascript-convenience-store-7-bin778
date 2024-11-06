@@ -12,7 +12,8 @@ class ProductsList {
     const fsProducts = this.readFileProducts(path);
     const splitedProducts = this.splitProducts(fsProducts);
     this.parseProducts(splitedProducts);
-    return this.#productsList;
+    const productsList = this.#productsList;
+    return productsList;
   }
 
   readFileProducts(path) {
