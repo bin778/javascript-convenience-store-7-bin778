@@ -8,10 +8,10 @@ class HandlerInput {
     this.#purchaseProducts = new PurchaseProducts();
   }
 
-  async handlePurchaseProducts(purchaseProductsArr) {
+  async handlePurchaseProducts(purchaseProductsArr, products) {
     ValidatePurchaseProducts.validateInputFormat(purchaseProductsArr);
     const purchaseProducts = this.#purchaseProducts.getPurchaseProducts(purchaseProductsArr);
-    console.log(purchaseProducts);
+    ValidatePurchaseProducts.validateNonProducts(purchaseProducts, products);
   }
 }
 

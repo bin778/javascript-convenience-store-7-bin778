@@ -21,15 +21,15 @@ class StoreController {
 
     StoreOutput.readStoreInfoMessage();
     StoreOutput.readProductsList(products);
-    const purchaseProducts = await this.#inputPurchaseProducts();
+    const purchaseProducts = await this.#inputPurchaseProducts(products);
   }
 
-  async #inputPurchaseProducts() {
+  async #inputPurchaseProducts(products) {
     while (true) {
       try {
         const purchaseProductsInput = await StoreInput.readPurchaseProducts();
         const purchaseProductsArr = purchaseProductsInput.split(',');
-        await this.#handlerInput.handlePurchaseProducts(purchaseProductsArr);
+        await this.#handlerInput.handlePurchaseProducts(purchaseProductsArr, products);
         return purchaseProductsArr;
       } catch (error) {
         StoreOutput.printErrorMessage(error);
