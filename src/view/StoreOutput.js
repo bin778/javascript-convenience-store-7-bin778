@@ -11,6 +11,10 @@ class StoreOutput {
     const formattedList = FormattedList.formattedProductsList(products);
     Console.print(formattedList);
   }
+
+  static printErrorMessage(error) {
+    Console.print(error.message);
+  }
 }
 
 export default StoreOutput;
