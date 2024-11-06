@@ -19,6 +19,15 @@ class ValidatePurchaseProducts {
     const checkZeroProducts = purchaseProducts.some((item) => item.quantity > 0);
     if (!checkZeroProducts) throw new Error(ERROR_MESSAGE.PURCHASE.zeroProducts);
   }
+
+  static validateStockProducts(purchaseProducts, product) {
+    const checkStockProducts = purchaseProducts.every((purchase) => {
+      const stockItem = product[purchase.product];
+      const totalStock = stockItem.reduce((sum, item) => sum + item.quantity, 0);
+      return purchase.quantity <= totalStock;
+    });
+    if (!checkStockProducts) throw new Error(ERROR_MESSAGE.PURCHASE.stockProducts);
+  }
 }
 
 export default ValidatePurchaseProducts;

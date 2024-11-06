@@ -13,6 +13,7 @@ class HandlerInput {
     const purchaseProducts = this.#purchaseProducts.getPurchaseProducts(purchaseProductsArr);
     ValidatePurchaseProducts.validateNonProducts(purchaseProducts, products);
     ValidatePurchaseProducts.validateZeroProducts(purchaseProducts);
+    ValidatePurchaseProducts.validateStockProducts(purchaseProducts, products);
   }
 }
 
