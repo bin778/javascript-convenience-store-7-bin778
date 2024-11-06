@@ -14,6 +14,7 @@ class HandlerInput {
     ValidatePurchaseProducts.validateNonProducts(purchaseProducts, products);
     ValidatePurchaseProducts.validateZeroProducts(purchaseProducts);
     ValidatePurchaseProducts.validateStockProducts(purchaseProducts, products);
+    return purchaseProducts;
   }
 }
 

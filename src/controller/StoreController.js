@@ -3,6 +3,7 @@ import StoreInput from '../view/StoreInput.js';
 import ProductsList from '../model/ProductsList.js';
 import PromotionsList from '../model/PromotionsList.js';
 import HandlerInput from './HandlerInput.js';
+import SubstractProducts from '../util/SubtractProducts.js';
 
 class StoreController {
   #productsList;
@@ -22,6 +23,7 @@ class StoreController {
     StoreOutput.readStoreInfoMessage();
     StoreOutput.readProductsList(products);
     const purchaseProducts = await this.#inputPurchaseProducts(products);
+    SubstractProducts.substractProducts(purchaseProducts, products);
   }
 
   async #inputPurchaseProducts(products) {
@@ -29,8 +31,7 @@ class StoreController {
       try {
         const purchaseProductsInput = await StoreInput.readPurchaseProducts();
         const purchaseProductsArr = purchaseProductsInput.split(',');
-        await this.#handlerInput.handlePurchaseProducts(purchaseProductsArr, products);
-        return purchaseProductsArr;
+        return await this.#handlerInput.handlePurchaseProducts(purchaseProductsArr, products);
       } catch (error) {
         StoreOutput.printErrorMessage(error);
       }
