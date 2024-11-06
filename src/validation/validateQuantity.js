@@ -1,6 +1,6 @@
 import { ERROR_MESSAGE } from '../constant/Error.js';
 
-class validateQuantity {
+class ValidateQuantity {
   static validateInputFormat(quantity_arr) {
     const format_regex = /^\[[^\[\]-]+-\d+\]$/;
     quantity_arr.forEach((item) => {
@@ -9,4 +9,4 @@ class validateQuantity {
   }
 }
 
-export default validateQuantity;
+export default ValidateQuantity;
