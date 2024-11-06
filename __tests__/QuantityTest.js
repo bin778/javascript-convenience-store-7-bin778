@@ -20,4 +20,10 @@ describe('구매할 상품과 수량을 입력받는 테스트', () => {
       ValidatePurchaseProducts.validateNonProducts(purchaseProducts, products);
     }).toThrow(ERROR_MESSAGE.PURCHASE.nonProducts);
   });
+
+  test.each([[[{ quantity: -10 }]], [[{ quantity: 0 }]]])('구매 수량이 0이하인 경우', (input) => {
+    expect(() => {
+      ValidatePurchaseProducts.validateZeroProducts(input);
+    }).toThrow(ERROR_MESSAGE.PURCHASE.zeroProducts);
+  });
 });
