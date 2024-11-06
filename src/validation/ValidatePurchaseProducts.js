@@ -14,6 +14,11 @@ class ValidatePurchaseProducts {
     );
     if (!checkNonProducts) throw new Error(ERROR_MESSAGE.PURCHASE.nonProducts);
   }
+
+  static validateZeroProducts(purchaseProducts) {
+    const checkZeroProducts = purchaseProducts.some((item) => item.quantity > 0);
+    if (!checkZeroProducts) throw new Error(ERROR_MESSAGE.PURCHASE.zeroProducts);
+  }
 }
 
 export default ValidatePurchaseProducts;
