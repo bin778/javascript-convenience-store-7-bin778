@@ -26,4 +26,21 @@ describe('구매할 상품과 수량을 입력받는 테스트', () => {
       ValidatePurchaseProducts.validateZeroProducts(input);
     }).toThrow(ERROR_MESSAGE.PURCHASE.zeroProducts);
   });
+
+  test.each([
+    [[{ product: '라면', quantity: 11 }], { 라면: [{ name: '라면', quantity: 10 }] }],
+    [
+      [{ product: '콜라', quantity: 25 }],
+      {
+        콜라: [
+          { name: '콜라', quantity: 12 },
+          { name: '콜라', quantity: 10 },
+        ],
+      },
+    ],
+  ])('구매 수량이 재고 수량보다 많은 경우', (purchaseProducts, products) => {
+    expect(() => {
+      ValidatePurchaseProducts.validateStockProducts(purchaseProducts, products);
+    }).toThrow(ERROR_MESSAGE.PURCHASE.stockProducts);
+  });
 });
