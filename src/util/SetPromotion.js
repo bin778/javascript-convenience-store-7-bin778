@@ -5,7 +5,8 @@ class SetPromotion {
   static setPromotion(purchaseProducts, productsList, promotionsList) {
     const matchPromotion = this.findMatchingPromotion(purchaseProducts, productsList);
     const matchDatePromotion = this.findMatchingDate(matchPromotion, promotionsList);
-    const promotionPrice = this.addPromotion(purchaseProducts, matchDatePromotion, productsList, promotionsList);
+    const filterProducts = this.filteredProducts(purchaseProducts, matchDatePromotion);
+    const promotionPrice = this.addPromotion(filterProducts, matchDatePromotion, productsList, promotionsList);
     return promotionPrice;
   }
 
@@ -48,14 +49,16 @@ class SetPromotion {
     return null;
   }
 
-  static addPromotion(purchaseProducts, matchDatePromotion, productsList, promotionsList) {
+  static filteredProducts(purchaseProducts, matchDatePromotion) {
+    return purchaseProducts.filter((item) => matchDatePromotion.hasOwnProperty(item.product));
+  }
+
+  static addPromotion(filterProducts, matchDatePromotion, productsList, promotionsList) {
     let promotionPrice = 0;
     let purchaseCount = 0;
     Object.entries(matchDatePromotion).forEach(([name, promotion]) => {
-      const quantity = purchaseProducts[purchaseCount].quantity;
-      if (promotion !== null) {
-        promotionPrice += PromotionPrice.setPromotionPrice(name, promotion, quantity, productsList, promotionsList);
-      }
+      const quantity = filterProducts[purchaseCount].quantity;
+      promotionPrice += PromotionPrice.setPromotionPrice(name, promotion, quantity, productsList, promotionsList);
       purchaseCount += 1;
     });
     return promotionPrice;
