@@ -20,8 +20,18 @@ class FormattedList {
 
   static formatProductsItem(name, item) {
     let { price, quantity, promotion } = item;
-    if (!promotion) promotion = '';
-    return `- ${name} ${price.toLocaleString()}원 ${quantity}개 ${promotion}`;
+    promotion = this.checkPromotion(promotion);
+    const printQuantity = this.checkQuantity(quantity);
+    return `- ${name} ${price.toLocaleString()}원 ${printQuantity} ${promotion}`;
+  }
+
+  static checkPromotion(promotion) {
+    if (!promotion) return '';
+    return promotion;
+  }
+  static checkQuantity(quantity) {
+    if (quantity === 0) return '재고 없음';
+    return `${quantity}개`;
   }
 }
 

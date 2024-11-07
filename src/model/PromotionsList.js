@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { PROMOTIONS } from '../constant/Data.js';
+import { REGEX } from '../constant/Regex.js';
 
-// [ ] ProductsList() 와의 반복 리팩토링
 class PromotionsList {
   #promotionsList;
 
@@ -22,7 +22,7 @@ class PromotionsList {
   }
 
   splitPromotions(fsPromotions) {
-    const splitRegex = /[\r\n,|]/;
+    const splitRegex = REGEX.splitRegex;
     return fsPromotions.split(splitRegex).filter(Boolean);
   }
 
