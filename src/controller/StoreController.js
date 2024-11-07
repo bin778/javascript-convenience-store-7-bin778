@@ -4,6 +4,7 @@ import ProductsList from '../model/ProductsList.js';
 import PromotionsList from '../model/PromotionsList.js';
 import HandlerInput from './HandlerInput.js';
 import SubstractProducts from '../util/SubtractProducts.js';
+import SetPromotion from '../util/SetPromotion.js';
 
 class StoreController {
   #productsList;
@@ -17,21 +18,22 @@ class StoreController {
   }
 
   async visitStore() {
-    const products = this.#productsList.getProductsList('public/products.md');
-    const promotions = this.#promotionsList.getPromotionList('public/promotions.md');
+    const productsList = this.#productsList.getProductsList('public/products.md');
+    const promotionsList = this.#promotionsList.getPromotionList('public/promotions.md');
 
     StoreOutput.readStoreInfoMessage();
-    StoreOutput.readProductsList(products);
-    const purchaseProducts = await this.#inputPurchaseProducts(products);
-    SubstractProducts.substractProducts(purchaseProducts, products);
+    StoreOutput.readProductsList(productsList);
+    const purchaseProducts = await this.inputPurchaseProducts(productsList);
+    SubstractProducts.substractProducts(purchaseProducts, productsList);
+    SetPromotion.setPromotion(purchaseProducts, productsList, promotionsList);
   }
 
-  async #inputPurchaseProducts(products) {
+  async inputPurchaseProducts(productsList) {
     while (true) {
       try {
         const purchaseProductsInput = await StoreInput.readPurchaseProducts();
         const purchaseProductsArr = purchaseProductsInput.split(',');
-        return await this.#handlerInput.handlePurchaseProducts(purchaseProductsArr, products);
+        return await this.#handlerInput.handlePurchaseProducts(purchaseProductsArr, productsList);
       } catch (error) {
         StoreOutput.printErrorMessage(error);
       }
