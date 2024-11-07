@@ -1,9 +1,12 @@
 import { DateTimes } from '@woowacourse/mission-utils';
+import PromotionPrice from '../model/PromotionPrice.js';
 
 class SetPromotion {
   static setPromotion(purchaseProducts, productsList, promotionsList) {
     const matchPromotion = this.findMatchingPromotion(purchaseProducts, productsList);
     const matchDatePromotion = this.findMatchingDate(matchPromotion, promotionsList);
+    const promotionPrice = this.addPromotion(purchaseProducts, matchDatePromotion, productsList, promotionsList);
+    return promotionPrice;
   }
 
   static findMatchingPromotion(purchaseProducts, productsList) {
@@ -43,6 +46,19 @@ class SetPromotion {
   static isPromotion(promotion, promotionName) {
     if (promotion) return promotionName;
     return null;
+  }
+
+  static addPromotion(purchaseProducts, matchDatePromotion, productsList, promotionsList) {
+    let promotionPrice = 0;
+    let purchaseCount = 0;
+    Object.entries(matchDatePromotion).forEach(([name, promotion]) => {
+      const quantity = purchaseProducts[purchaseCount].quantity;
+      if (promotion !== null) {
+        promotionPrice += PromotionPrice.setPromotionPrice(name, promotion, quantity, productsList, promotionsList);
+      }
+      purchaseCount += 1;
+    });
+    return promotionPrice;
   }
 }
 
