@@ -24,8 +24,8 @@ class StoreController {
     StoreOutput.readStoreInfoMessage();
     StoreOutput.readProductsList(productsList);
     const purchaseProducts = await this.inputPurchaseProducts(productsList);
-    SubstractProducts.substractProducts(purchaseProducts, productsList);
     const promotionPrice = SetPromotion.setPromotion(purchaseProducts, productsList, promotionsList);
+    SubstractProducts.substractProducts(purchaseProducts, productsList);
   }
 
   async inputPurchaseProducts(productsList) {

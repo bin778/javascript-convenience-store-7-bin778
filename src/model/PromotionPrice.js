@@ -16,6 +16,7 @@ class PromotionPrice {
     const { buy, get } = promoDetails;
     const promoUnits = Math.floor(quantity / (buy + get));
     const totalGetUnits = promoUnits * get;
+    if (product.quantity <= buy + get) return 0;
     return totalGetUnits * product.price;
   }
 }
