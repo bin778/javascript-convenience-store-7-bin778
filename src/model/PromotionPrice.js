@@ -18,12 +18,14 @@ class PromotionPrice {
   // [ ] 리팩토링 예정
   static async calculatePromotionPrice(name, promotion, quantity, purchaseProducts, productsList, promotionsList) {
     const product = productsList[name]?.find((product) => product.promotion === promotion);
+    if (promotionsList[promotion] === undefined) return 0;
     const promoDetails = promotionsList[promotion][0];
     const { buy, get } = promoDetails;
     const promoUnits = Math.floor(quantity / (buy + get));
     const totalGetUnits = promoUnits * get;
     if (quantity < buy + get) {
       const addQuantity = await this.inputAddProduct(name, quantity, buy, get, purchaseProducts, productsList);
+      if (addQuantity === 0) return 0;
       return ((addQuantity + quantity) / (buy + get)) * product.price;
     }
     if (product.quantity <= buy + get) return 0;
