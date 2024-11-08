@@ -18,14 +18,21 @@ class StoreController {
   }
 
   async visitStore() {
+    const [productsList, promotionsList] = this.createList();
+    this.printHeader(productsList);
+    const purchaseProducts = await this.inputPurchaseProducts(productsList);
+    const promotionPrice = this.setPromotionPrice(purchaseProducts, productsList, promotionsList);
+  }
+
+  createList() {
     const productsList = this.#productsList.getProductsList('public/products.md');
     const promotionsList = this.#promotionsList.getPromotionList('public/promotions.md');
+    return [productsList, promotionsList];
+  }
 
+  printHeader(productsList) {
     StoreOutput.readStoreInfoMessage();
     StoreOutput.readProductsList(productsList);
-    const purchaseProducts = await this.inputPurchaseProducts(productsList);
-    const promotionPrice = SetPromotion.setPromotion(purchaseProducts, productsList, promotionsList);
-    SubstractProducts.substractProducts(purchaseProducts, productsList);
   }
 
   async inputPurchaseProducts(productsList) {
@@ -38,6 +45,12 @@ class StoreController {
         StoreOutput.printErrorMessage(error);
       }
     }
+  }
+
+  setPromotionPrice(purchaseProducts, productsList, promotionsList) {
+    const promotionPrice = SetPromotion.setPromotion(purchaseProducts, productsList, promotionsList);
+    SubstractProducts.substractProducts(purchaseProducts, productsList);
+    return promotionPrice;
   }
 }
 
