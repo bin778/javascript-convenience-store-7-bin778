@@ -7,4 +7,7 @@ export const ERROR_MESSAGE = Object.freeze({
     zeroProducts: `${ERROR_FLAG} 구매 수량은 0 이하로 입력할 수 없습니다. 다시 입력해 주세요.`,
     stockProducts: `${ERROR_FLAG} 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.`,
   }),
+  QUESTION: Object.freeze({
+    nonYesOrNo: `${ERROR_FLAG} Y 또는 N만 입력할 수 있습니다. 다시 입력해 주세요.`,
+  }),
 });
