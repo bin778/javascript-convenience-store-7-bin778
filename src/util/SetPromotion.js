@@ -2,11 +2,17 @@ import { DateTimes } from '@woowacourse/mission-utils';
 import PromotionPrice from '../model/PromotionPrice.js';
 
 class SetPromotion {
-  static setPromotion(purchaseProducts, productsList, promotionsList) {
+  static async setPromotion(purchaseProducts, productsList, promotionsList) {
     const matchPromotion = this.findMatchingPromotion(purchaseProducts, productsList);
     const matchDatePromotion = this.findMatchingDate(matchPromotion, promotionsList);
     const filterProducts = this.filteredProducts(purchaseProducts, matchDatePromotion);
-    const promotionPrice = this.addPromotion(filterProducts, matchDatePromotion, productsList, promotionsList);
+    const promotionPrice = await this.addPromotion(
+      filterProducts,
+      matchDatePromotion,
+      purchaseProducts,
+      productsList,
+      promotionsList
+    );
     return promotionPrice;
   }
 
@@ -53,14 +59,21 @@ class SetPromotion {
     return purchaseProducts.filter((item) => matchDatePromotion.hasOwnProperty(item.product));
   }
 
-  static addPromotion(filterProducts, matchDatePromotion, productsList, promotionsList) {
+  static async addPromotion(filterProducts, matchDatePromotion, purchaseProducts, productsList, promotionsList) {
     let promotionPrice = 0;
     let purchaseCount = 0;
-    Object.entries(matchDatePromotion).forEach(([name, promotion]) => {
+    for (const [name, promotion] of Object.entries(matchDatePromotion)) {
       const quantity = filterProducts[purchaseCount].quantity;
-      promotionPrice += PromotionPrice.setPromotionPrice(name, promotion, quantity, productsList, promotionsList);
+      promotionPrice += await PromotionPrice.setPromotionPrice(
+        name,
+        promotion,
+        quantity,
+        purchaseProducts,
+        productsList,
+        promotionsList
+      );
       purchaseCount += 1;
-    });
+    }
     return promotionPrice;
   }
 }

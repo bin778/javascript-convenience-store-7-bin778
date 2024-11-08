@@ -21,7 +21,7 @@ class StoreController {
     const [productsList, promotionsList] = this.createList();
     this.printHeader(productsList);
     const purchaseProducts = await this.inputPurchaseProducts(productsList);
-    const promotionPrice = this.setPromotionPrice(purchaseProducts, productsList, promotionsList);
+    const promotionPrice = await this.setPromotionPrice(purchaseProducts, productsList, promotionsList);
   }
 
   createList() {
@@ -47,8 +47,8 @@ class StoreController {
     }
   }
 
-  setPromotionPrice(purchaseProducts, productsList, promotionsList) {
-    const promotionPrice = SetPromotion.setPromotion(purchaseProducts, productsList, promotionsList);
+  async setPromotionPrice(purchaseProducts, productsList, promotionsList) {
+    const promotionPrice = await SetPromotion.setPromotion(purchaseProducts, productsList, promotionsList);
     SubstractProducts.substractProducts(purchaseProducts, productsList);
     return promotionPrice;
   }
