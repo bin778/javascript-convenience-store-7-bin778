@@ -4,7 +4,7 @@ import ValidateQuestion from '../validation/ValidateQuestion.js';
 
 class PromotionPrice {
   static async setPromotionPrice(name, promotion, quantity, purchaseProducts, productsList, promotionsList) {
-    const promotionPrice = await this.calculatePromotionPrice(
+    const [promotionPrice, productPrice, promotionQuantity] = await this.calculatePromotionPrice(
       name,
       promotion,
       quantity,
@@ -12,24 +12,24 @@ class PromotionPrice {
       productsList,
       promotionsList
     );
-    return promotionPrice;
+    return [promotionPrice, productPrice * promotionQuantity];
   }
 
   // [ ] 리팩토링 예정
   static async calculatePromotionPrice(name, promotion, quantity, purchaseProducts, productsList, promotionsList) {
     const product = productsList[name]?.find((product) => product.promotion === promotion);
-    if (promotionsList[promotion] === undefined) return 0;
+    if (promotionsList[promotion] === undefined) return [0, 0, 0];
     const promoDetails = promotionsList[promotion][0];
     const { buy, get } = promoDetails;
     const promoUnits = Math.floor(quantity / (buy + get));
     const totalGetUnits = promoUnits * get;
     if (quantity < buy + get) {
       const addQuantity = await this.inputAddProduct(name, quantity, buy, get, purchaseProducts, productsList);
-      if (addQuantity === 0) return 0;
-      return ((addQuantity + quantity) / (buy + get)) * product.price;
+      if (addQuantity === 0) return [0, 0, 0];
+      return [((addQuantity + quantity) / (buy + get)) * product.price, product.price, totalGetUnits * (buy + get)];
     }
-    if (product.quantity <= buy + get) return 0;
-    return totalGetUnits * product.price;
+    if (product.quantity <= buy + get) return [0, 0, 0];
+    return [totalGetUnits * product.price, product.price, totalGetUnits * (buy + get)];
   }
 
   static async inputAddProduct(name, quantity, buy, get, purchaseProducts, productsList) {

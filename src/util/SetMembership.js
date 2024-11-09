@@ -4,11 +4,11 @@ import ValidateQuestion from '../validation/ValidateQuestion.js';
 import { MEMBERSHIP } from '../constant/Data.js';
 
 class SetMemebership {
-  static async setMemebership(purchaseProducts, productsList) {
+  static async setMemebership(purchaseProducts, productsList, promotionTotalPrice) {
     const totalPrice = await this.calculateTotalPrice(purchaseProducts, productsList);
     const isMembership = await this.inputMembership();
     if (isMembership === 'N') return [totalPrice, 0];
-    const membershipPrice = await this.calculateMembership(totalPrice);
+    const membershipPrice = await this.calculateMembership(totalPrice - promotionTotalPrice);
     return [totalPrice, membershipPrice];
   }
 

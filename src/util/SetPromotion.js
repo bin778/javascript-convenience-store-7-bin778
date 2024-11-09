@@ -6,14 +6,14 @@ class SetPromotion {
     const matchPromotion = this.findMatchingPromotion(purchaseProducts, productsList);
     const matchDatePromotion = this.findMatchingDate(matchPromotion, promotionsList);
     const filterProducts = this.filteredProducts(purchaseProducts, matchDatePromotion);
-    const promotionPrice = await this.addPromotion(
+    const [promotionPrice, promotionTotalPrice] = await this.addPromotion(
       filterProducts,
       matchDatePromotion,
       purchaseProducts,
       productsList,
       promotionsList
     );
-    return promotionPrice;
+    return [promotionPrice, promotionTotalPrice];
   }
 
   static findMatchingPromotion(purchaseProducts, productsList) {
@@ -60,11 +60,10 @@ class SetPromotion {
   }
 
   static async addPromotion(filterProducts, matchDatePromotion, purchaseProducts, productsList, promotionsList) {
-    let promotionPrice = 0;
-    let purchaseCount = 0;
+    let [promotionPrice, promotionTotalPrice, purchaseCount] = [0, 0, 0];
     for (const [name, promotion] of Object.entries(matchDatePromotion)) {
       const quantity = filterProducts[purchaseCount].quantity;
-      promotionPrice += await PromotionPrice.setPromotionPrice(
+      const [setPrice, setTotalPrice] = await PromotionPrice.setPromotionPrice(
         name,
         promotion,
         quantity,
@@ -72,9 +71,11 @@ class SetPromotion {
         productsList,
         promotionsList
       );
+      promotionPrice += setPrice;
+      promotionTotalPrice += setTotalPrice;
       purchaseCount += 1;
     }
-    return promotionPrice;
+    return [promotionPrice, promotionTotalPrice];
   }
 }
 

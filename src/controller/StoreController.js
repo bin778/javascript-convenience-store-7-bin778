@@ -22,8 +22,16 @@ class StoreController {
     const [productsList, promotionsList] = this.createList();
     this.printHeader(productsList);
     const purchaseProducts = await this.inputPurchaseProducts(productsList);
-    const promotionPrice = await this.setPromotionPrice(purchaseProducts, productsList, promotionsList);
-    const [totalPrice, membershipPrice] = await this.setMemebershipPrice(purchaseProducts, productsList);
+    const [promotionPrice, promotionTotalPrice] = await this.setPromotionPrice(
+      purchaseProducts,
+      productsList,
+      promotionsList
+    );
+    const [totalPrice, membershipPrice] = await this.setMemebershipPrice(
+      purchaseProducts,
+      productsList,
+      promotionTotalPrice
+    );
     console.log(promotionPrice, membershipPrice, totalPrice);
   }
 
@@ -56,8 +64,8 @@ class StoreController {
     return promotionPrice;
   }
 
-  async setMemebershipPrice(purchaseProducts, productsList) {
-    return await SetMemebership.setMemebership(purchaseProducts, productsList);
+  async setMemebershipPrice(purchaseProducts, productsList, promotionTotalPrice) {
+    return await SetMemebership.setMemebership(purchaseProducts, productsList, promotionTotalPrice);
   }
 }
 
