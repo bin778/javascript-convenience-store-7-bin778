@@ -11,8 +11,12 @@ class StoreInput {
     return Console.readLineAsync(message);
   }
 
-  static async asyncAddMembership() {
+  static async readAddMembership() {
     return Console.readLineAsync(MESSAGE.INPUT.MEMBERSHIP);
+  }
+
+  static async readRePurchase() {
+    return Console.readLineAsync(MESSAGE.INPUT.RE_PURCHASE);
   }
 }
 

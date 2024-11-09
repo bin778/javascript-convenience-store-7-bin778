@@ -6,6 +6,7 @@ import HandlerInput from './HandlerInput.js';
 import SubstractProducts from '../util/SubtractProducts.js';
 import SetPromotion from '../util/SetPromotion.js';
 import SetMemebership from '../util/SetMembership.js';
+import ValidateQuestion from '../validation/ValidateQuestion.js';
 
 class StoreController {
   #productsList;
@@ -18,8 +19,10 @@ class StoreController {
     this.#handlerInput = new HandlerInput();
   }
 
+  // [ ] while 문 테스트할 때 무한 루프 해결, 함수 라인 압축(리팩토링)
   async visitStore() {
     const [productsList, promotionsList] = this.createList();
+    // while (true) {
     this.printHeader(productsList);
     const purchaseProducts = await this.inputPurchaseProducts(productsList);
     const [promotionPrice, promotionTotalPrice] = await this.setPromotionPrice(
@@ -32,7 +35,10 @@ class StoreController {
       productsList,
       promotionTotalPrice
     );
-    console.log(promotionPrice, membershipPrice, totalPrice);
+    this.printResult(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList);
+    //   const rePurchase = await this.inputRePurchase();
+    //   if (rePurchase === 'N') break;
+    // }
   }
 
   createList() {
@@ -42,8 +48,8 @@ class StoreController {
   }
 
   printHeader(productsList) {
-    StoreOutput.readStoreInfoMessage();
-    StoreOutput.readProductsList(productsList);
+    StoreOutput.printStoreInfoMessage();
+    StoreOutput.printProductsList(productsList);
   }
 
   async inputPurchaseProducts(productsList) {
@@ -66,6 +72,22 @@ class StoreController {
 
   async setMemebershipPrice(purchaseProducts, productsList, promotionTotalPrice) {
     return await SetMemebership.setMemebership(purchaseProducts, productsList, promotionTotalPrice);
+  }
+
+  printResult(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList) {
+    StoreOutput.printReceipt(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList);
+  }
+
+  async inputRePurchase() {
+    while (true) {
+      try {
+        const rePurchase = await StoreInput.readRePurchase();
+        ValidateQuestion.validateYesOrNo(rePurchase);
+        return rePurchase;
+      } catch (error) {
+        StoreOutput.printErrorMessage(error);
+      }
+    }
   }
 }
 

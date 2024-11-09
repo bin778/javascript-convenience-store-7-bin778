@@ -15,7 +15,7 @@ class PromotionPrice {
     return [promotionPrice, productPrice * promotionQuantity];
   }
 
-  // [ ] 리팩토링 예정
+  // [ ] 함수 라인 압축(리팩토링)
   static async calculatePromotionPrice(name, promotion, quantity, purchaseProducts, productsList, promotionsList) {
     const product = productsList[name]?.find((product) => product.promotion === promotion);
     if (promotionsList[promotion] === undefined) return [0, 0, 0];

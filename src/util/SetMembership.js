@@ -24,7 +24,7 @@ class SetMemebership {
   static async inputMembership() {
     while (true) {
       try {
-        const isMembership = await StoreInput.asyncAddMembership();
+        const isMembership = await StoreInput.readAddMembership();
         ValidateQuestion.validateYesOrNo(isMembership);
         return isMembership;
       } catch (error) {
