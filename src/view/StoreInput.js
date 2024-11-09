@@ -10,6 +10,10 @@ class StoreInput {
     const message = MESSAGE.INPUT.ADD_PRODUCT.replace('{name}', name).replace('{add_quantity}', add_quantity);
     return Console.readLineAsync(message);
   }
+
+  static async asyncAddMembership() {
+    return Console.readLineAsync(MESSAGE.INPUT.MEMBERSHIP);
+  }
 }
 
 export default StoreInput;

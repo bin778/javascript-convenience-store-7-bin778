@@ -5,6 +5,7 @@ import PromotionsList from '../model/PromotionsList.js';
 import HandlerInput from './HandlerInput.js';
 import SubstractProducts from '../util/SubtractProducts.js';
 import SetPromotion from '../util/SetPromotion.js';
+import SetMemebership from '../util/SetMembership.js';
 
 class StoreController {
   #productsList;
@@ -22,6 +23,8 @@ class StoreController {
     this.printHeader(productsList);
     const purchaseProducts = await this.inputPurchaseProducts(productsList);
     const promotionPrice = await this.setPromotionPrice(purchaseProducts, productsList, promotionsList);
+    const [totalPrice, membershipPrice] = await this.setMemebershipPrice(purchaseProducts, productsList);
+    console.log(promotionPrice, membershipPrice, totalPrice);
   }
 
   createList() {
@@ -51,6 +54,10 @@ class StoreController {
     const promotionPrice = await SetPromotion.setPromotion(purchaseProducts, productsList, promotionsList);
     SubstractProducts.substractProducts(purchaseProducts, productsList);
     return promotionPrice;
+  }
+
+  async setMemebershipPrice(purchaseProducts, productsList) {
+    return await SetMemebership.setMemebership(purchaseProducts, productsList);
   }
 }
 
