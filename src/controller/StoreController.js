@@ -21,23 +21,23 @@ class StoreController {
 
   async visitStore() {
     const [productsList, promotionsList] = this.createList();
-    while (true) {
-      this.printHeader(productsList);
-      const purchaseProducts = await this.inputPurchaseProducts(productsList);
-      const [promotionPrice, promotionTotalPrice] = await this.setPromotionPrice(
-        purchaseProducts,
-        productsList,
-        promotionsList
-      );
-      const [totalPrice, membershipPrice] = await this.setMemebershipPrice(
-        purchaseProducts,
-        productsList,
-        promotionTotalPrice
-      );
-      this.printResult(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList, promotionsList);
-      const rePurchase = await this.inputRePurchase();
-      if (rePurchase === 'N') return;
-    }
+    // while (true) {
+    this.printHeader(productsList);
+    const purchaseProducts = await this.inputPurchaseProducts(productsList);
+    const [promotionPrice, promotionTotalPrice] = await this.setPromotionPrice(
+      purchaseProducts,
+      productsList,
+      promotionsList
+    );
+    const [totalPrice, membershipPrice] = await this.setMemebershipPrice(
+      purchaseProducts,
+      productsList,
+      promotionTotalPrice
+    );
+    this.printResult(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList, promotionsList);
+    // const rePurchase = await this.inputRePurchase();
+    // if (rePurchase === 'N') return;
+    // }
   }
 
   createList() {
