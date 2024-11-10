@@ -31,8 +31,8 @@ class PromotionPrice {
     }
     if (quantity > product.quantity) {
       const initialQuantity = product.quantity;
-      const remainQuantity = (product.quantity % (buy + get)) + (quantity - product.quantity);
-      const minusQuantity = await this.inputOutStock(name, remainQuantity, purchaseProducts, productsList);
+      const remainingQuantity = (product.quantity % (buy + get)) + (quantity - product.quantity);
+      const minusQuantity = await this.inputOutStock(name, remainingQuantity, purchaseProducts, productsList);
       if (minusQuantity !== 0) {
         return [
           Math.trunc(initialQuantity / (buy + get)) * product.price,

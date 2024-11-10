@@ -12,17 +12,14 @@ class StoreOutput {
     Console.print(formattedList);
   }
 
-  static printReceipt(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList) {
+  static printReceipt(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList, promotionsList) {
     Console.print(MESSAGE.RECEIPT.HEADER);
     Console.print(MESSAGE.RECEIPT.PURCHASE);
     this.printPurchaseList(purchaseProducts, productsList);
     Console.print(MESSAGE.RECEIPT.PROMOTION);
+    this.printPromotionList(purchaseProducts, productsList, promotionsList);
     Console.print(MESSAGE.RECEIPT.FOOTER);
     this.printTotalList(totalPrice, promotionPrice, membershipPrice, purchaseProducts);
-  }
-
-  static getPurchaseQuantity(remainingQuantity, availableQuantity) {
-    return Math.min(remainingQuantity, availableQuantity);
   }
 
   static printPurchaseList(purchaseProducts, productsList) {
@@ -30,6 +27,21 @@ class StoreOutput {
       const productInfo = productsList[product];
       const { totalPrice, actualQuantity } = this.calculateTotalPriceAndQuantity(productInfo, quantity);
       Console.print(`${product}\t${actualQuantity}\t${totalPrice.toLocaleString()}`);
+    });
+  }
+
+  static printPromotionList(purchaseProducts, productsList, promotionsList) {
+    purchaseProducts.forEach(({ product, quantity }) => {
+      const productInfo = productsList[product];
+      const promotionName = productInfo[0].promotion;
+      let giftedQuantity = 0;
+      if (promotionName && promotionsList[promotionName]) {
+        const { buy, get } = promotionsList[promotionName][0];
+        giftedQuantity = Math.trunc(quantity / (buy + get));
+      }
+      if (giftedQuantity > 0) {
+        console.log(`${product}\t${giftedQuantity}`);
+      }
     });
   }
 

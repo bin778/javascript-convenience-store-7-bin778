@@ -35,7 +35,7 @@ class StoreController {
       productsList,
       promotionTotalPrice
     );
-    this.printResult(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList);
+    this.printResult(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList, promotionsList);
     //   const rePurchase = await this.inputRePurchase();
     //   if (rePurchase === 'N') break;
     // }
@@ -74,8 +74,15 @@ class StoreController {
     return await SetMemebership.setMemebership(purchaseProducts, productsList, promotionTotalPrice);
   }
 
-  printResult(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList) {
-    StoreOutput.printReceipt(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList);
+  printResult(totalPrice, promotionPrice, membershipPrice, purchaseProducts, productsList, promotionsList) {
+    StoreOutput.printReceipt(
+      totalPrice,
+      promotionPrice,
+      membershipPrice,
+      purchaseProducts,
+      productsList,
+      promotionsList
+    );
   }
 
   async inputRePurchase() {
