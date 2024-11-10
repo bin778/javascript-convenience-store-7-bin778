@@ -15,18 +15,31 @@ class PromotionPrice {
     return [promotionPrice, productPrice * promotionQuantity];
   }
 
-  // [ ] 함수 라인 압축(리팩토링)
   static async calculatePromotionPrice(name, promotion, quantity, purchaseProducts, productsList, promotionsList) {
     const product = productsList[name]?.find((product) => product.promotion === promotion);
     if (promotionsList[promotion] === undefined) return [0, 0, 0];
     const promoDetails = promotionsList[promotion][0];
     const { buy, get } = promoDetails;
     const promoUnits = Math.floor(quantity / (buy + get));
-    const totalGetUnits = promoUnits * get;
+    let totalGetUnits = promoUnits * get;
+    if (totalGetUnits >= Math.trunc(product.quantity / (buy + get)))
+      totalGetUnits = Math.trunc(product.quantity / (buy + get));
     if (quantity < buy + get) {
       const addQuantity = await this.inputAddProduct(name, quantity, buy, get, purchaseProducts, productsList);
       if (addQuantity === 0) return [0, 0, 0];
       return [((addQuantity + quantity) / (buy + get)) * product.price, product.price, totalGetUnits * (buy + get)];
+    }
+    if (quantity > product.quantity) {
+      const initialQuantity = product.quantity;
+      const remainQuantity = (product.quantity % (buy + get)) + (quantity - product.quantity);
+      const minusQuantity = await this.inputOutStock(name, remainQuantity, purchaseProducts, productsList);
+      if (minusQuantity !== 0) {
+        return [
+          Math.trunc(initialQuantity / (buy + get)) * product.price,
+          product.price,
+          Math.trunc(initialQuantity / (buy + get)),
+        ];
+      }
     }
     if (product.quantity <= buy + get) return [0, 0, 0];
     return [totalGetUnits * product.price, product.price, totalGetUnits * (buy + get)];
@@ -56,6 +69,32 @@ class PromotionPrice {
     const productListEntry = productsList[name]?.find((item) => item.name === name);
     if (productListEntry && productListEntry.quantity >= addQuantity) productListEntry.quantity -= addQuantity;
     return addQuantity;
+  }
+
+  static async inputOutStock(name, minusQuantity, purchaseProducts, productsList) {
+    const outStock = await this.questionOutStock(name, minusQuantity);
+    if (outStock === 'N') return await this.setOutStock(name, minusQuantity, purchaseProducts, productsList);
+    return 0;
+  }
+
+  static async questionOutStock(name, minusQuantity) {
+    while (true) {
+      try {
+        const outStock = await StoreInput.readOutStock(name, minusQuantity);
+        ValidateQuestion.validateYesOrNo(outStock);
+        return outStock;
+      } catch (error) {
+        StoreOutput.printErrorMessage(error);
+      }
+    }
+  }
+
+  static async setOutStock(name, minusQuantity, purchaseProducts, productsList) {
+    const purchaseProduct = purchaseProducts.find((item) => item.product === name);
+    if (purchaseProduct) purchaseProduct.quantity -= minusQuantity;
+    const productListEntry = productsList[name]?.find((item) => item.name === name);
+    if (productListEntry && productListEntry.quantity >= minusQuantity) productListEntry.quantity += minusQuantity;
+    return minusQuantity;
   }
 }
 

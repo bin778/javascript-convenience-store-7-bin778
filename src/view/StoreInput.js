@@ -6,8 +6,13 @@ class StoreInput {
     return Console.readLineAsync(MESSAGE.INPUT.QUANTITY);
   }
 
-  static async readAddProduct(name, add_quantity) {
-    const message = MESSAGE.INPUT.ADD_PRODUCT.replace('{name}', name).replace('{add_quantity}', add_quantity);
+  static async readAddProduct(name, addQuantity) {
+    const message = MESSAGE.INPUT.ADD_PRODUCT.replace('{name}', name).replace('{addQuantity}', addQuantity);
+    return Console.readLineAsync(message);
+  }
+
+  static async readOutStock(name, minusQuantity) {
+    const message = MESSAGE.INPUT.OUT_STOCK.replace('{name}', name).replace('{minusQuantity}', minusQuantity);
     return Console.readLineAsync(message);
   }
 

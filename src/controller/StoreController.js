@@ -19,7 +19,7 @@ class StoreController {
     this.#handlerInput = new HandlerInput();
   }
 
-  // [ ] while 문 테스트할 때 무한 루프 해결, 함수 라인 압축(리팩토링)
+  // [ ] while 문 테스트할 때 무한 루프 해결
   async visitStore() {
     const [productsList, promotionsList] = this.createList();
     // while (true) {

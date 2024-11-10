@@ -59,7 +59,6 @@ class SetPromotion {
     return purchaseProducts.filter((item) => matchDatePromotion.hasOwnProperty(item.product));
   }
 
-  // [ ] 함수 라인 압축(리팩토링)
   static async addPromotion(filterProducts, matchDatePromotion, purchaseProducts, productsList, promotionsList) {
     let [promotionPrice, promotionTotalPrice, purchaseCount] = [0, 0, 0];
     for (const [name, promotion] of Object.entries(matchDatePromotion)) {
