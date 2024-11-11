@@ -60,22 +60,22 @@ class SetPromotion {
   }
 
   static async addPromotion(filterProducts, matchDatePromotion, purchaseProducts, productsList, promotionsList) {
-    let [promotionPrice, promotionTotalPrice, purchaseCount] = [0, 0, 0];
-    for (const [name, promotion] of Object.entries(matchDatePromotion)) {
-      const quantity = filterProducts[purchaseCount].quantity;
-      const [setPrice, setTotalPrice] = await PromotionPrice.setPromotionPrice(
-        name,
-        promotion,
-        quantity,
-        purchaseProducts,
-        productsList,
-        promotionsList
-      );
-      promotionPrice += setPrice;
-      promotionTotalPrice += setTotalPrice;
-      purchaseCount += 1;
-    }
-    return [promotionPrice, promotionTotalPrice];
+    const promotionResults = await Promise.all(
+      Object.entries(matchDatePromotion).map(([name, promotion], i) =>
+        PromotionPrice.setPromotionPrice(
+          name,
+          promotion,
+          filterProducts[i].quantity,
+          purchaseProducts,
+          productsList,
+          promotionsList
+        )
+      )
+    );
+    return promotionResults.reduce(
+      ([promoPrice, promoTotal], [setPrice, setTotalPrice]) => [promoPrice + setPrice, promoTotal + setTotalPrice],
+      [0, 0]
+    );
   }
 }
 
