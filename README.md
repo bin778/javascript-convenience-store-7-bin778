@@ -235,3 +235,49 @@ Y
 감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)
 N
 ```
+
+## 출력 결과
+
+![image](https://github.com/user-attachments/assets/d5a4c59a-ffe5-4a95-ac77-8ce4d54943dd)
+
+## 디렉터리 구조
+
+```
+├── package-lock.json
+├── package.json
+├── public
+|  ├── products.md
+|  └── promotions.md
+├── README.md
+├── src
+|  ├── App.js
+|  ├── constant
+|  |  ├── Data.js
+|  |  ├── Error.js
+|  |  ├── Message.js
+|  |  └── Regex.js
+|  ├── controller
+|  |  ├── HandlerInput.js
+|  |  └── StoreController.js
+|  ├── index.js
+|  ├── model
+|  |  ├── ProductsList.js
+|  |  ├── PromotionPrice.js
+|  |  ├── PromotionsList.js
+|  |  └── PurchaseProducts.js
+|  ├── util
+|  |  ├── FormattedList.js
+|  |  ├── SetMembership.js
+|  |  ├── SetPromotion.js
+|  |  └── SubtractProducts.js
+|  ├── validation
+|  |  ├── ValidatePurchaseProducts.js
+|  |  └── ValidateQuestion.js
+|  └── view
+|     ├── StoreInput.js
+|     └── StoreOutput.js
+└── __tests__
+   ├── ApplicationTest.js
+   ├── QuantityTest.js
+   └── QuestionTest.js
+```
